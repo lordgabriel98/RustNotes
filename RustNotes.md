@@ -280,9 +280,9 @@ fn main(){
 Or this:
 
 ```rust
-	pub mod database;
-	pub use databse::model::create_user;
-	// use on the create_user function from the model module in the database package.
+pub mod database;
+pub use databse::model::create_user;
+// use on the create_user function from the model module in the database package.
 
 fn main(){
 	let name = "John";
