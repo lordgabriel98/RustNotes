@@ -215,3 +215,85 @@ Tuples are collections of values of different types, and they have a fixed size 
 
 The `calculate_power` function takes a `base` of type `f64` and an `exponent` of type `i32`. 
 
+### Modules
+
+Generally, breaking down function into different modules in a growning code base is best.
+
+We can do this in Rust by leveragin the `mod.rs` file, a specially recognized and reserved file for Rust projects. Inside the `src/` directory, you can also have other subdirectories called modules. Using them in the project must be linked to the `main.rs` or `lib.rs` file.
+
+Here's how you can work with modules in Rust. Inside the `src/` directory, create a new directory called database. In it, create a `mod.rs` file and a `model.rs` file. The `mod.rs` file gives visibility to other files in the subdirectory under the `src/` directory. To practically understand this, add the following code to the specfified files.
+
+`mod.rs`:
+```rust
+	pub mod model;
+```
+
+`model.rs`:
+```rust
+	
+pub fn create_user(name: &str, age: i32){
+    
+    println!("New user created: {} of age {}", name, age);
+
+}
+```
+
+`main.rs`:
+```rust
+pub mod database; // make the database module availbale in this file.
+pub use database::*; // give this file access to all public modules and their functions (*) inside of the database module.
+
+fn main() {
+
+	let name = "John";
+	let age = 35;
+
+	database::model::create_user(name, age);
+
+}
+```
+
+Note that we are using a clean `main.rs` file. Run the code with cargo, and you should see:
+
+```
+    Finished dev [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/test_env src/main.rs`
+New user created: John of age 35
+```
+
+- **Note**: In Rust, the double semicolon notation is used to call methods of a module/package. Since we already specified to use all public modules and their respective functions using this line `pub use database::*`, we can shorten the calling technique to this: `model::create_user(name, age)`.
+
+We can also do this:
+
+```rust
+pub mod database;
+pub use database::model::*;
+
+fn main(){
+	let name = "John";
+	let age = 35;
+
+	create_user(name, age);
+}
+```
+
+Or this:
+
+```rust
+	pub mod database;
+	pub use databse::model::create_user;
+	// use on the create_user function from the model module in the database package.
+
+fn main(){
+	let name = "John";
+	let age = 35;
+
+	create_user(name, age);
+}	
+```
+
+
+
+
+
+
